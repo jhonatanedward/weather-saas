@@ -1,5 +1,12 @@
 package com.edward.weatherbff.config;
 
+import com.edward.weatherbff.domain.port.out.CachePort;
+import com.edward.weatherbff.domain.port.out.SubscriptionPort;
+import com.edward.weatherbff.domain.port.out.WeatherDataSourcePort;
+import com.edward.weatherbff.domain.services.SubscriptionService;
+import com.edward.weatherbff.domain.services.WeatherCoreService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +22,22 @@ public class Configuration {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+    @Bean
+    public WeatherCoreService weatherCoreService(
+            WeatherDataSourcePort dataSource,
+            CachePort cache,
+            SubscriptionPort subscriptionPort) {
+        return new WeatherCoreService(dataSource, cache, subscriptionPort);
+    }
+
+    @Bean
+    public SubscriptionService subscriptionService(
+            SubscriptionPort subscriptionPort
+    ) {
+        return new SubscriptionService(subscriptionPort);
+    }
+
     @Bean
     public PublicKey publicKey(RestTemplate restTemplate) throws Exception {
         String keyString = restTemplate.getForObject("http://localhost:8080/auth/public-key", String.class);
@@ -28,4 +51,11 @@ public class Configuration {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         return kf.generatePublic(spec);
     }
+    
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    }
+
 }

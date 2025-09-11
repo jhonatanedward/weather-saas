@@ -39,8 +39,12 @@ public class SubscriptionController {
     }
 
     @GetMapping
-    public ResponseEntity<Subscription> getSubscription(@RequestParam String userId) {
+    public ResponseEntity<ApiResponse<?>> getSubscription(@RequestParam String userId) {
         Subscription subscription = findSubscriptionUseCase.findByUserId(userId);
-        return ResponseEntity.ok(subscription);
+        ApiResponse<Subscription> apiResponse = ApiResponse.success(
+                "Ok",
+                subscription
+        );
+        return ResponseEntity.ok(apiResponse);
     }
 }

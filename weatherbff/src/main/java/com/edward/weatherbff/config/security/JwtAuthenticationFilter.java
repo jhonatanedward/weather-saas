@@ -1,6 +1,6 @@
 package com.edward.weatherbff.config.security;
 
-import com.edward.weatherbff.adapters.inbound.utils.JwtUtil;
+import com.edward.weatherbff.adapters.controllers.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

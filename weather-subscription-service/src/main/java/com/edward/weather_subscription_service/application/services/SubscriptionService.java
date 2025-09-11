@@ -26,7 +26,7 @@ public class SubscriptionService implements CreateSubscriptionUseCase, FindSubsc
     @Override
     public Subscription createSubscription(SubscriptionRequest request) {
 
-        Subscription subscription = findByUserId(request.userId());
+        Subscription subscription = subscriptionRepositoryPort.findByUserId(request.userId());
 
         if(subscription != null) {
             throw new UserAlreadyHasSubscriptionException("User aldready has a subscription");

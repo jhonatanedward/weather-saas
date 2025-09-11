@@ -1,4 +1,4 @@
-package com.edward.weatherbff.adapters.inbound.utils;
+package com.edward.weatherbff.adapters.controllers.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

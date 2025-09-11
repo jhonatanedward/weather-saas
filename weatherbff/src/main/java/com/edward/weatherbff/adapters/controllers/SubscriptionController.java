@@ -1,28 +1,26 @@
-package com.edward.weatherbff.adapters.inbound;
+package com.edward.weatherbff.adapters.controllers;
 
 
-import com.edward.weatherbff.adapters.inbound.utils.JwtUtil;
-import com.edward.weatherbff.application.SubscriptionUseCase;
+import com.edward.weatherbff.adapters.controllers.utils.JwtUtil;
+import com.edward.weatherbff.domain.port.in.SubscriptionServicePort;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/subscription")
+@AllArgsConstructor
 public class SubscriptionController {
 
-    private final SubscriptionUseCase subscriptionUseCase;
+    private final SubscriptionServicePort subscriptionServicePort;
     private final JwtUtil jwtUtil;
 
-    public SubscriptionController(SubscriptionUseCase subscriptionUseCase, JwtUtil jwtUtil) {
-        this.subscriptionUseCase = subscriptionUseCase;
-        this.jwtUtil = jwtUtil;
-    }
     @PostMapping
     public ResponseEntity<?> subscribe(@RequestHeader("Authorization") String authHeader) {
         var claims = jwtUtil.parseToken(authHeader);
         Long userId = claims.get("id", Long.class);
         String currentPlan = claims.get("email", String.class);
-        return ResponseEntity.ok(subscriptionUseCase.subscribeUser(userId, currentPlan));
+        return ResponseEntity.ok(subscriptionServicePort.subscribeUser(userId, currentPlan));
     }
 
 }

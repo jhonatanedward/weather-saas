@@ -1,4 +1,4 @@
-package com.edward.weatherbff.adapters.inbound.resources;
+package com.edward.weatherbff.adapters.controllers.resources;
 
 import lombok.Getter;
 import lombok.Setter;

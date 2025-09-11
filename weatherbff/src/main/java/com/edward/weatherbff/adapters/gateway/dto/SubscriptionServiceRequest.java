@@ -1,4 +1,4 @@
-package com.edward.weatherbff.adapters.outbound.dto;
+package com.edward.weatherbff.adapters.gateway.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

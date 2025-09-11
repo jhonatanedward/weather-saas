@@ -1,4 +1,4 @@
-package com.edward.weatherbff.application.exception;
+package com.edward.weatherbff.domain.exception;
 
 public class AlreadyPremiumException extends RuntimeException{
     public AlreadyPremiumException(String message) {

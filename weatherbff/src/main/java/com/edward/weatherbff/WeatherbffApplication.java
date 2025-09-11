@@ -8,6 +8,7 @@ import org.springframework.retry.annotation.EnableRetry;
 
 @SpringBootApplication
 @EnableRetry
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WeatherbffApplication {
 
 	public static void main(String[] args) {

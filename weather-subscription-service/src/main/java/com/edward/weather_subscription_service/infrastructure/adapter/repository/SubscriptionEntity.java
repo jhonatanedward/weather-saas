@@ -2,7 +2,10 @@ package com.edward.weather_subscription_service.infrastructure.adapter.repositor
 
 import com.edward.weather_subscription_service.domain.model.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +14,8 @@ import java.util.UUID;
 @Entity
 class SubscriptionEntity {
     @Id
+    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private String userId;
     private String planType;

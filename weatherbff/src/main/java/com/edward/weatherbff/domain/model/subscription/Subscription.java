@@ -1,11 +1,11 @@
-package com.edward.weatherbff.domain;
+package com.edward.weatherbff.domain.model.subscription;
 
 import java.time.Instant;
 
 public class Subscription {
     private Long userId;
     private String email;
-    private String planType;
+    private Plan plan;
 
     public Long getUserId() {
         return userId;
@@ -23,11 +23,11 @@ public class Subscription {
         this.email = email;
     }
 
-    public String getPlanType() {
-        return planType;
+    public Plan getPlan() {
+        return plan;
     }
 
-    public void setPlanType(String planType) {
-        this.planType = planType;
+    public void setPlanType(Plan planType) {
+        this.plan = plan;
     }
 }
