@@ -1,14 +1,10 @@
 package com.edward.weatherbff.adapters.outbound.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class SubscriptionServiceRequest {
-    private Long userId;
-    private String email;
-    private String planType;
+public record SubscriptionServiceRequest(
+        @JsonProperty("user_id")
+        Long userId,
+        @JsonProperty("email")
+        String email) {
 }

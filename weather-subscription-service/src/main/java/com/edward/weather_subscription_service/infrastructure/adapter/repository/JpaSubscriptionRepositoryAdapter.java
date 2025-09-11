@@ -5,9 +5,12 @@ import com.edward.weather_subscription_service.domain.model.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
-interface JpaSubscriptionRepository extends JpaRepository<SubscriptionEntity, UUID> {}
+interface JpaSubscriptionRepository extends JpaRepository<SubscriptionEntity, UUID> {
+    Optional<SubscriptionEntity> findByUserId(String userId);
+}
 
 @Repository
 public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryPort {
@@ -27,9 +30,24 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
         entity.setExternalSubscriptionId(subscription.getExternalSubscriptionId());
         entity.setCheckoutUrl(subscription.getCheckoutUrl());
         entity.setStatus(subscription.getStatus());
-
         repository.save(entity);
-
+        subscription.setId(entity.getId());
         return subscription;
+    }
+
+    @Override
+    public Subscription findByUserId(String userId) {
+        return repository.findByUserId(userId)
+                .map((entity) -> {
+                    Subscription subscription = new Subscription(
+                            entity.getUserId(),
+                            entity.getExternalSubscriptionId(),
+                            entity.getPlanType(),
+                            entity.getCheckoutUrl()
+                    );
+                    subscription.setId(entity.getId());
+                    return subscription;
+                })
+                .orElse(null);
     }
 }

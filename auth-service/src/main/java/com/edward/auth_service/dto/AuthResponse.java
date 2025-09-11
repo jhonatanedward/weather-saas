@@ -1,3 +1,3 @@
 package com.edward.auth_service.dto;
 
-public record AuthResponse(Long id, String username, String role, String token) {}
+public record AuthResponse(Long id, String username, String token) {}

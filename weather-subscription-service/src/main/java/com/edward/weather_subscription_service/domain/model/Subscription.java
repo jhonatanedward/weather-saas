@@ -3,7 +3,6 @@ package com.edward.weather_subscription_service.domain.model;
 import java.util.UUID;
 
 public class Subscription {
-
     private UUID id;
     private String userId;
     private String planType;
@@ -11,17 +10,19 @@ public class Subscription {
     private String checkoutUrl;
     private Status status;
 
-    public Subscription(String userId, String planType, String externalSubscriptionId, String checkoutUrl) {
-        this.id = UUID.randomUUID();
+    public Subscription(String userId, String externalSubscriptionId, String planType, String checkoutUrl) {
         this.userId = userId;
-        this.planType = planType;
         this.externalSubscriptionId = externalSubscriptionId;
         this.checkoutUrl = checkoutUrl;
         this.status = Status.PENDING;
+        this.planType = planType;
     }
 
     public UUID getId() {
         return id;
+    }
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUserId() {

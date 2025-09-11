@@ -18,14 +18,11 @@ public class SubscriptionController {
         this.jwtUtil = jwtUtil;
     }
     @PostMapping
-    public ResponseEntity<?> subscribe(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestParam String plan
-            ) {
+    public ResponseEntity<?> subscribe(@RequestHeader("Authorization") String authHeader) {
         var claims = jwtUtil.parseToken(authHeader);
         Long userId = claims.get("id", Long.class);
-        String currentPlan = claims.get("plan", String.class);
-        return ResponseEntity.ok(subscriptionUseCase.subscribeUser(userId, plan, currentPlan));
+        String currentPlan = claims.get("email", String.class);
+        return ResponseEntity.ok(subscriptionUseCase.subscribeUser(userId, currentPlan));
     }
 
 }

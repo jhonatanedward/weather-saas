@@ -10,12 +10,12 @@ import java.util.Random;
 public class MockPaymentGatewayAdapter implements PaymentGatewayPort {
 
     @Override
-    public PaymentSession createSubscriptionSession(String email, String planType) {
+    public PaymentSession createSubscriptionSession(String email) {
         System.out.println("Mocking payment gateway API call for user: with email: " + email);
 
         long randomNumber = Math.abs(new Random().nextLong());
 
-        String mockExternalId = "sub_" + randomNumber + "_" + planType;
+        String mockExternalId = "sub_" + randomNumber;
 
         String mockCheckoutUrl = "https://mock-checkout.com/session?id=" + mockExternalId;
 

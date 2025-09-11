@@ -22,13 +22,13 @@ public class AuthController {
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest request) {
         User user = authService.signup(request);
         String token = jwtUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(user.getId(), user.getUsername(), user.getRole(), token));
+        return ResponseEntity.ok(new AuthResponse(user.getId(), user.getUsername(), token));
     }
 
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> signin(@RequestBody SigninRequest request) {
         User user = authService.signin(request);
         String token = jwtUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(user.getId(), user.getUsername(), user.getRole(), token));
+        return ResponseEntity.ok(new AuthResponse(user.getId(), user.getUsername(), token));
     }
 }

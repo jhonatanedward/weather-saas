@@ -13,7 +13,7 @@ public class SubscriptionUseCase {
         this.subscriptionServicePort = subscriptionServicePort;
     }
 
-    public SubscriptionBffResponse subscribeUser(Long userId, String email, String plan) {
-        return subscriptionServicePort.subscribe(userId, email, plan);
+    public SubscriptionBffResponse subscribeUser(Long userId, String email) {
+        return subscriptionServicePort.subscribe(userId, email);
     }
 }

@@ -1,13 +1,15 @@
 package com.edward.auth_service.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @UuidGenerator
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -19,8 +21,6 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-
-    private String role = "FREE";
 
     public Long getId() {
         return id;
@@ -54,12 +54,5 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
 }
