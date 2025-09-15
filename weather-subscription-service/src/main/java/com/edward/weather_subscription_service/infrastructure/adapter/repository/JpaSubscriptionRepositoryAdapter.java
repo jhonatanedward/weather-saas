@@ -1,8 +1,8 @@
 package com.edward.weather_subscription_service.infrastructure.adapter.repository;
 
-import com.edward.weather_subscription_service.application.model.Plan;
+import com.edward.weather_subscription_service.domain.model.Plan;
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
-import com.edward.weather_subscription_service.application.model.Subscription;
+import com.edward.weather_subscription_service.domain.model.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

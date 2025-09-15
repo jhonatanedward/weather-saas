@@ -1,14 +1,14 @@
 services:
-  auth-service:
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
-    container_name: auth-service
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=local
-    restart: unless-stopped
+  # auth-service:
+  #   build:
+  #     context: ./auth-service
+  #     dockerfile: Dockerfile
+  #   container_name: auth-service
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=local
+  #   restart: unless-stopped
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq
@@ -23,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: subscription_db
+      POSTGRES_DB: weather_db
     ports:
       - "5432:5432"
     volumes:

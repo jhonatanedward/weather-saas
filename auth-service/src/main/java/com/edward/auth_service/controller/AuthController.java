@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/v1/auth")
+public class AuthController implements AuthApi {
     private final AuthService authService;
     private final JwtUtil jwtUtil;
 

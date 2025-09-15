@@ -17,8 +17,8 @@ public class SubscriptionController {
     @PostMapping
     public ResponseEntity<?> subscribe(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        String userEmail = (String) request.getAttribute("userEmail");
-        return ResponseEntity.ok(subscriptionServicePort.subscribeUser(userId, userEmail));
+        String currentPlan = (String) request.getAttribute("userEmail");
+        return ResponseEntity.ok(subscriptionServicePort.subscribeUser(userId, currentPlan));
     }
 
 }

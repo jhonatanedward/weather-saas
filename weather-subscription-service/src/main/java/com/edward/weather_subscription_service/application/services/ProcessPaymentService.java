@@ -1,13 +1,12 @@
 package com.edward.weather_subscription_service.application.services;
 
-import com.edward.weather_subscription_service.application.model.Plan;
+import com.edward.weather_subscription_service.domain.model.Plan;
 import com.edward.weather_subscription_service.application.ports.in.ProcessPaymentUseCase;
 import com.edward.weather_subscription_service.application.ports.out.MessageQueuePort;
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
 import com.edward.weather_subscription_service.application.services.exception.SubscriptionNotFoundException;
-import com.edward.weather_subscription_service.application.model.Subscription;
+import com.edward.weather_subscription_service.domain.model.Subscription;
 import com.edward.weather_subscription_service.infrastructure.adapter.controller.resources.PaymentProcessed;
-import com.edward.weather_subscription_service.infrastructure.config.JacksonConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
