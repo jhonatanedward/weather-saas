@@ -1,5 +1,6 @@
 package com.edward.weatherbff.domain.services;
 
+import com.edward.weatherbff.domain.exception.RateLimiteExceededException;
 import com.edward.weatherbff.domain.model.subscription.Subscription;
 import com.edward.weatherbff.domain.port.in.WeatherServicePort;
 import com.edward.weatherbff.domain.port.out.CachePort;
@@ -8,6 +9,10 @@ import com.edward.weatherbff.domain.port.out.WeatherDataSourcePort;
 import com.edward.weatherbff.domain.model.subscription.Plan;
 import com.edward.weatherbff.domain.model.weather.Main;
 import com.edward.weatherbff.domain.model.weather.WeatherData;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 public class WeatherCoreService implements WeatherServicePort {
     private final WeatherDataSourcePort dataSource;
@@ -22,33 +27,64 @@ public class WeatherCoreService implements WeatherServicePort {
 
     public WeatherData getWeatherData(String cityId, Long clientId) {
 
-        Subscription subscription = subscriptionPort.getSubscription(clientId);
+        String subscriptionPlanKey = "subscription-plan-" + clientId;
+        Plan plan = cache.get(subscriptionPlanKey, Plan.class);
 
-        // ... e o rate limit
-        // implementar rate limit
-
-
-        // E a lógica do cache (tudo aqui no Core)
-        WeatherData cachedData = cache.get(clientId);
-        if (cachedData != null) {
-            return cachedData;
+        if (plan == null) {
+            Subscription subscription = subscriptionPort.getSubscription(clientId);
+            plan = subscription.getPlan();
+            cache.save(subscriptionPlanKey, plan, 24, TimeUnit.HOURS);
         }
 
-        // Se não tem cache, pega os dados brutos e os converte
-        WeatherData rawData = dataSource.fetchWeatherData(cityId);
-        WeatherData filteredData = filterDataByPlan(rawData, subscription.getPlan().name());
+        if (isRateLimited(clientId, plan)) {
+            throw new RateLimiteExceededException("Rate limit exceeded for client " + clientId);
+        }
 
-        cache.save(clientId, filteredData);
+        WeatherData cachedData = cache.get("weather-data-" + cityId, WeatherData.class);
+        if (cachedData == null) {
+            WeatherData rawData = dataSource.fetchWeatherData(cityId);
+            cachedData = filterDataByPlan(rawData, plan.name());
+        }
 
-        return filteredData;
+        cache.save("weather-data-" + cityId, cachedData, 15, TimeUnit.MINUTES);
+
+        return cachedData;
+    }
+    private boolean isRateLimited(Long clientId, Plan plan) {
+        String cacheKey = "rate-limit-" + clientId + "-" + LocalDate.now();
+
+        Integer requestCount = cache.get(cacheKey, Integer.class);
+
+        int maxRequests = getMaxRequestsByPlan(plan);
+        long secondsUntilMidnight = ChronoUnit.SECONDS.between(
+                java.time.LocalDateTime.now(),
+                LocalDate.now().plusDays(1).atStartOfDay()
+        );
+
+        if (requestCount == null) {
+            cache.save(cacheKey, 1, secondsUntilMidnight, TimeUnit.SECONDS);
+            return false;
+        }
+
+        if (requestCount >= maxRequests) {
+            return true;
+        }
+
+        cache.save(cacheKey, requestCount + 1, secondsUntilMidnight, TimeUnit.SECONDS);
+        return false;
     }
 
-    /**
-     * Filtra os dados de clima brutos com base no plano do cliente.
-     * @param rawData O objeto de dados brutos da API externa.
-     * @param plan O plano do cliente (ex: "free", "premium").
-     * @return Um objeto WeatherData com os campos permitidos para o plano.
-     */
+    private int getMaxRequestsByPlan(Plan plan) {
+        switch (plan) {
+            case FREE:
+                return 10;
+            case PREMIUM:
+                return 10000;
+            default:
+                return 0;
+        }
+    }
+
     private WeatherData filterDataByPlan(WeatherData rawData, String plan) {
         WeatherData filteredData = new WeatherData();
 

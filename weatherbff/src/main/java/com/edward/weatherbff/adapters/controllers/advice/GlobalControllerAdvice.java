@@ -8,13 +8,13 @@ import org.springframework.web.client.HttpClientErrorException;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
-    @ExceptionHandler(exception = HttpClientErrorException.class)
+    @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> handleHttpClientErrorException(HttpClientErrorException httpClientErrorException) {
         ApiResponse repsonse = httpClientErrorException.getResponseBodyAs(ApiResponse.class);
         return ResponseEntity.status(httpClientErrorException.getStatusCode()).body(repsonse);
     }
 
-    @ExceptionHandler(exception = Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception exception) {
         ApiResponse repsonse = ApiResponse.error(exception.getMessage());
         return ResponseEntity.status(500).body(repsonse);
