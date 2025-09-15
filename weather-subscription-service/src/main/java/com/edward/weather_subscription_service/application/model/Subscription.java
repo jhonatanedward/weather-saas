@@ -1,4 +1,4 @@
-package com.edward.weather_subscription_service.domain.model;
+package com.edward.weather_subscription_service.application.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -6,16 +6,16 @@ import java.util.UUID;
 public class Subscription {
     private UUID id;
     private String userId;
-    private String planType;
+    private Plan plan;
     private String externalSubscriptionId;
     private LocalDateTime paymentDate;
     private String checkoutUrl;
     private Status status;
 
-    public Subscription(String userId, String externalSubscriptionId, String planType, String checkoutUrl) {
+    public Subscription(String userId, String externalSubscriptionId, Plan plan, String checkoutUrl) {
         this.userId = userId;
         this.externalSubscriptionId = externalSubscriptionId;
-        this.planType = planType;
+        this.plan = plan;
         this.checkoutUrl = checkoutUrl;
         this.status = Status.PENDING;
     }
@@ -35,10 +35,12 @@ public class Subscription {
         return userId;
     }
 
-    public String getPlanType() {
-        return planType;
+    public Plan getPlan() {
+        return plan;
     }
-
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
     public String getExternalSubscriptionId() {
         return externalSubscriptionId;
     }
@@ -62,7 +64,4 @@ public class Subscription {
         return paymentDate;
     }
 
-    public boolean isFreePlan() {
-        return "free".equalsIgnoreCase(planType);
-    }
 }

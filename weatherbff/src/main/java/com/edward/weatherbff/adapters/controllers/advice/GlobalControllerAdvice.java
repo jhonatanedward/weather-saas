@@ -14,4 +14,10 @@ public class GlobalControllerAdvice {
         return ResponseEntity.status(httpClientErrorException.getStatusCode()).body(repsonse);
     }
 
+    @ExceptionHandler(exception = Exception.class)
+    public ResponseEntity<?> handleException(Exception exception) {
+        ApiResponse repsonse = ApiResponse.error(exception.getMessage());
+        return ResponseEntity.status(500).body(repsonse);
+    }
+
 }

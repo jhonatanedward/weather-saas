@@ -4,6 +4,6 @@ import com.edward.weatherbff.domain.model.subscription.Subscription;
 import com.edward.weatherbff.domain.model.subscription.SubscriptionCreated;
 
 public interface SubscriptionPort {
-    Subscription getSubscription(String clientId);
+    Subscription getSubscription(Long clientId);
     SubscriptionCreated createSubscription(Long userId, String email);
 }

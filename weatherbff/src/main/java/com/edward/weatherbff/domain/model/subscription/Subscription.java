@@ -26,6 +26,9 @@ public class Subscription {
     public Plan getPlan() {
         return plan;
     }
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
 
     public void setPlanType(Plan planType) {
         this.plan = plan;

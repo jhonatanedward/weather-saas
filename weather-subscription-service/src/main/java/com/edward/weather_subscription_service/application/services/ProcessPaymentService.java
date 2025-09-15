@@ -1,20 +1,29 @@
 package com.edward.weather_subscription_service.application.services;
 
+import com.edward.weather_subscription_service.application.model.Plan;
 import com.edward.weather_subscription_service.application.ports.in.ProcessPaymentUseCase;
+import com.edward.weather_subscription_service.application.ports.out.MessageQueuePort;
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
 import com.edward.weather_subscription_service.application.services.exception.SubscriptionNotFoundException;
-import com.edward.weather_subscription_service.domain.model.Subscription;
+import com.edward.weather_subscription_service.application.model.Subscription;
 import com.edward.weather_subscription_service.infrastructure.adapter.controller.resources.PaymentProcessed;
+import com.edward.weather_subscription_service.infrastructure.config.JacksonConfig;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class ProcessPaymentService implements ProcessPaymentUseCase {
 
     private final SubscriptionRepositoryPort subscriptionRepositoryPort;
-    public ProcessPaymentService(SubscriptionRepositoryPort subscriptionRepositoryPort) {
+    private final MessageQueuePort messageQueuePort;
+    private final ObjectMapper objectMapper;
+    public ProcessPaymentService(
+            SubscriptionRepositoryPort subscriptionRepositoryPort, MessageQueuePort messageQueuePort,
+            ObjectMapper objectMapper) {
         this.subscriptionRepositoryPort = subscriptionRepositoryPort;
+        this.messageQueuePort = messageQueuePort;
+        this.objectMapper = objectMapper;
     }
     @Override
     public void proccessReceivedPayment(PaymentProcessed paymentProcessed) {
@@ -25,6 +34,17 @@ public class ProcessPaymentService implements ProcessPaymentUseCase {
         }
         subscription.setPaymentDate(paymentProcessed.paymentEffectedDate());
         subscription.activate();
+        subscription.setPlan(Plan.PREMIUM);
         subscriptionRepositoryPort.save(subscription);
+        sendReceivedPaymentEvent(subscription);
+    }
+
+    private void sendReceivedPaymentEvent(Subscription subscription) {
+        try {
+            String sb = objectMapper.writeValueAsString(subscription);
+            messageQueuePort.sendMessage(sb);
+        }catch (JsonProcessingException ex) {
+            // TODO
+        }
     }
 }

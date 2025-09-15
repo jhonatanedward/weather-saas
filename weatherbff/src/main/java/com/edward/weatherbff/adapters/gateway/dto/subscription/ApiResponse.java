@@ -1,4 +1,4 @@
-package com.edward.weatherbff.adapters.gateway.dto;
+package com.edward.weatherbff.adapters.gateway.dto.subscription;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubscriptionResponse {
+public class ApiResponse<T> {
     private String status;
     private String message;
-    private Data data;
+    private T data;
 }
 

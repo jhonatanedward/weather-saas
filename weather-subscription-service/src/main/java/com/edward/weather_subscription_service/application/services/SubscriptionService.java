@@ -1,6 +1,7 @@
 package com.edward.weather_subscription_service.application.services;
 
 
+import com.edward.weather_subscription_service.application.model.Plan;
 import com.edward.weather_subscription_service.application.ports.in.CreateSubscriptionUseCase;
 import com.edward.weather_subscription_service.application.ports.in.FindSubscriptionUseCase;
 import com.edward.weather_subscription_service.application.ports.in.SubscriptionRequest;
@@ -9,7 +10,7 @@ import com.edward.weather_subscription_service.application.ports.out.PaymentSess
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
 import com.edward.weather_subscription_service.application.services.exception.SubscriptionNotFoundException;
 import com.edward.weather_subscription_service.application.services.exception.UserAlreadyHasSubscriptionException;
-import com.edward.weather_subscription_service.domain.model.Subscription;
+import com.edward.weather_subscription_service.application.model.Subscription;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,7 @@ public class SubscriptionService implements CreateSubscriptionUseCase, FindSubsc
         Subscription newSubscription = new Subscription(
                 request.userId(),
                 session.getExternalSubscriptionId(),
-                "FREE",
+                Plan.FREE,
                 session.getCheckoutUrl()
         );
 

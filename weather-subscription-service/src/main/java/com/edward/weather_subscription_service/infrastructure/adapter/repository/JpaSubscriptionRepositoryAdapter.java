@@ -1,8 +1,8 @@
 package com.edward.weather_subscription_service.infrastructure.adapter.repository;
 
+import com.edward.weather_subscription_service.application.model.Plan;
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
-import com.edward.weather_subscription_service.domain.model.Status;
-import com.edward.weather_subscription_service.domain.model.Subscription;
+import com.edward.weather_subscription_service.application.model.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +28,7 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
         SubscriptionEntity entity = new SubscriptionEntity();
         entity.setId(subscription.getId());
         entity.setUserId(subscription.getUserId());
-        entity.setPlanType(subscription.getPlanType());
+        entity.setPlan(subscription.getPlan().name());
         entity.setExternalSubscriptionId(subscription.getExternalSubscriptionId());
         entity.setCheckoutUrl(subscription.getCheckoutUrl());
         entity.setPaymentDate(subscription.getPaymentDate());
@@ -57,7 +57,7 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
         Subscription subscription = new Subscription(
                 entity.getUserId(),
                 entity.getExternalSubscriptionId(),
-                entity.getPlanType(),
+                Plan.valueOf(entity.getPlanType()),
                 entity.getCheckoutUrl()
         );
         subscription.setId(entity.getId());

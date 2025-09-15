@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class RedisCacheAdapter implements CachePort {
 
     @Override
-    public WeatherData get(String key) {
+    public WeatherData get(Long key) {
         return null;
     }
     @Override
-    public void save(String key, WeatherData data) {
+    public void save(Long key, WeatherData data) {
 
     }
 

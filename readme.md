@@ -70,8 +70,6 @@ Acessar POSTGRESQL...
 docker exec -it weather-saas-db-1  psql -U user -d subscription_db
 
 
-
-
 ## TRADE-OFFS:
 
 Lógica de processamento de pagamento acoplada ao subscription.

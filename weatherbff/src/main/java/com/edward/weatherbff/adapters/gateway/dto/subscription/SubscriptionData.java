@@ -1,29 +1,37 @@
-package com.edward.weather_subscription_service.infrastructure.adapter.repository;
+package com.edward.weatherbff.adapters.gateway.dto.subscription;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
-@Table(name = "subscriptions")
-public class SubscriptionEntity {
-    @Id
-    @UuidGenerator
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+public class SubscriptionData {
+
+    private String id;
+
+    @JsonProperty("user_id")
     private String userId;
+
+    @JsonProperty("plan")
     private String plan;
+
+    @JsonProperty("external_subscription_id")
     private String externalSubscriptionId;
+
+    @JsonProperty("payment_date")
     private LocalDateTime paymentDate;
+
+    @JsonProperty("checkout_url")
     private String checkoutUrl;
+
     private String status;
 
-    public UUID getId() {
+    @JsonProperty("free_plan")
+    private boolean freePlan;
+
+    public String getId() {
         return id;
     }
-    public void setId(UUID id) {
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -39,7 +47,7 @@ public class SubscriptionEntity {
         return plan;
     }
 
-    public void setPlan(String plan) {
+    public void setPlanType(String plan) {
         this.plan = plan;
     }
 
@@ -51,6 +59,14 @@ public class SubscriptionEntity {
         this.externalSubscriptionId = externalSubscriptionId;
     }
 
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     public String getCheckoutUrl() {
         return checkoutUrl;
     }
@@ -59,20 +75,19 @@ public class SubscriptionEntity {
         this.checkoutUrl = checkoutUrl;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    public String getStatus(){
+    public String getStatus() {
         return status;
     }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
+    public boolean isFreePlan() {
+        return freePlan;
     }
 
-
+    public void setFreePlan(boolean freePlan) {
+        this.freePlan = freePlan;
+    }
 }

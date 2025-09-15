@@ -1,12 +1,17 @@
 package com.edward.weatherbff.adapters.gateway;
 
-import com.edward.weatherbff.adapters.controllers.resources.SubscriptionBffResponse;
-import com.edward.weatherbff.adapters.gateway.dto.SubscriptionResponse;
-import com.edward.weatherbff.adapters.gateway.dto.SubscriptionServiceRequest;
+
+import com.edward.weatherbff.adapters.gateway.dto.subscription.ApiResponse;
+import com.edward.weatherbff.adapters.gateway.dto.subscription.SubscriptionCreatedResponse;
+import com.edward.weatherbff.adapters.gateway.dto.subscription.SubscriptionData;
+import com.edward.weatherbff.adapters.gateway.dto.subscription.SubscriptionServiceRequest;
 import com.edward.weatherbff.adapters.gateway.mappers.SubscriptionMapper;
 import com.edward.weatherbff.domain.model.subscription.Subscription;
 import com.edward.weatherbff.domain.model.subscription.SubscriptionCreated;
 import com.edward.weatherbff.domain.port.out.SubscriptionPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -20,6 +25,9 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
     private final RestTemplate restTemplate;
     private final SubscriptionMapper subscriptionMapper;
 
+    ParameterizedTypeReference<ApiResponse<SubscriptionCreatedResponse>> typeReference =
+            new ParameterizedTypeReference<>() {};
+
 
     public SubscriptionServiceAdapter(RestTemplate restTemplate, SubscriptionMapper subscriptionMapper
     ) {
@@ -29,8 +37,22 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
 
 
     @Override
-    public Subscription getSubscription(String clientId) {
-        return null;
+    public Subscription getSubscription(Long clientId) {
+
+        String subscriptionServiceUrl = "http://localhost:8082/v1/subscriptions?userId=" + clientId;
+
+        ParameterizedTypeReference<ApiResponse<SubscriptionData>> typeReference =
+                new ParameterizedTypeReference<>() {};
+
+        ResponseEntity<ApiResponse<SubscriptionData>> response = restTemplate.exchange(
+                subscriptionServiceUrl,
+                HttpMethod.GET,
+                null,
+                typeReference
+        );
+
+
+        return subscriptionMapper.toDomainModel(response.getBody().getData());
     }
 
     @Override
@@ -44,12 +66,13 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
 
         String paymentServiceUrl = "http://localhost:8082/v1/subscriptions";
 
-        ResponseEntity<SubscriptionResponse> response = restTemplate.postForEntity(
+        ResponseEntity<ApiResponse<SubscriptionCreatedResponse>> response = restTemplate.exchange(
                 paymentServiceUrl,
-                request,
-                SubscriptionResponse.class
+                HttpMethod.POST,
+                new HttpEntity<>(request), // Wrap your request body in an HttpEntity
+                typeReference
         );
 
-        return subscriptionMapper.toDomainModel(response.getBody().getData());
+        return subscriptionMapper.toCreatedDomainModel(response.getBody().getData());
     }
 }

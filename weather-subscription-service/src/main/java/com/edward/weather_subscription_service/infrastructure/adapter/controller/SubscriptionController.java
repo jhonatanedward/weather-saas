@@ -4,7 +4,7 @@ import com.edward.weather_subscription_service.application.ports.in.CreateSubscr
 import com.edward.weather_subscription_service.application.ports.in.FindSubscriptionUseCase;
 import com.edward.weather_subscription_service.application.ports.in.ProcessPaymentUseCase;
 import com.edward.weather_subscription_service.application.ports.in.SubscriptionRequest;
-import com.edward.weather_subscription_service.domain.model.Subscription;
+import com.edward.weather_subscription_service.application.model.Subscription;
 import com.edward.weather_subscription_service.infrastructure.adapter.controller.advice.ApiResponse;
 import com.edward.weather_subscription_service.infrastructure.adapter.controller.resources.PaymentProcessed;
 import com.edward.weather_subscription_service.infrastructure.adapter.controller.resources.SubscriptionResponse;

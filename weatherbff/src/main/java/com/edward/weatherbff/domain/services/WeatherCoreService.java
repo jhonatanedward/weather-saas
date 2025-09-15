@@ -20,11 +20,13 @@ public class WeatherCoreService implements WeatherServicePort {
         this.subscriptionPort = subscriptionPort;
     }
 
-    public WeatherData getWeatherData(String cityId, String clientId) {
+    public WeatherData getWeatherData(String cityId, Long clientId) {
 
         Subscription subscription = subscriptionPort.getSubscription(clientId);
 
         // ... e o rate limit
+        // implementar rate limit
+
 
         // E a lógica do cache (tudo aqui no Core)
         WeatherData cachedData = cache.get(clientId);

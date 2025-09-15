@@ -1,4 +1,4 @@
-package com.edward.weatherbff.adapters.gateway.dto;
+package com.edward.weatherbff.adapters.gateway.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
