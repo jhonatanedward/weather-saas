@@ -1,18 +1,15 @@
 package com.edward.weather_subscription_service.infrastructure.adapter.repository;
 
-import com.edward.weather_subscription_service.domain.model.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.edward.weather_subscription_service.domain.model.Subscription;
+import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-class SubscriptionEntity {
+@Table(name = "subscriptions")
+public class SubscriptionEntity {
     @Id
     @UuidGenerator
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +17,13 @@ class SubscriptionEntity {
     private String userId;
     private String planType;
     private String externalSubscriptionId;
+    private LocalDateTime paymentDate;
     private String checkoutUrl;
     private String status;
 
     public UUID getId() {
         return id;
     }
-
     public void setId(UUID id) {
         this.id = id;
     }
@@ -66,4 +63,17 @@ class SubscriptionEntity {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getStatus(){
+        return status;
+    }
+
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+
 }

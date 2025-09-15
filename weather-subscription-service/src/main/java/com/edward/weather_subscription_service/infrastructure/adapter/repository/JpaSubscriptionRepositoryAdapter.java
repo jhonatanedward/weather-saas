@@ -1,6 +1,7 @@
 package com.edward.weather_subscription_service.infrastructure.adapter.repository;
 
 import com.edward.weather_subscription_service.application.ports.out.SubscriptionRepositoryPort;
+import com.edward.weather_subscription_service.domain.model.Status;
 import com.edward.weather_subscription_service.domain.model.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 interface JpaSubscriptionRepository extends JpaRepository<SubscriptionEntity, UUID> {
     Optional<SubscriptionEntity> findByUserId(String userId);
+    Optional<SubscriptionEntity> findByExternalSubscriptionId(String externalSubscriptionId);
 }
 
 @Repository
@@ -29,6 +31,7 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
         entity.setPlanType(subscription.getPlanType());
         entity.setExternalSubscriptionId(subscription.getExternalSubscriptionId());
         entity.setCheckoutUrl(subscription.getCheckoutUrl());
+        entity.setPaymentDate(subscription.getPaymentDate());
         entity.setStatus(subscription.getStatus());
         repository.save(entity);
         subscription.setId(entity.getId());
@@ -38,16 +41,28 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
     @Override
     public Subscription findByUserId(String userId) {
         return repository.findByUserId(userId)
-                .map((entity) -> {
-                    Subscription subscription = new Subscription(
-                            entity.getUserId(),
-                            entity.getExternalSubscriptionId(),
-                            entity.getPlanType(),
-                            entity.getCheckoutUrl()
-                    );
-                    subscription.setId(entity.getId());
-                    return subscription;
-                })
+                .map(this::toDomainModel)
                 .orElse(null);
+    }
+
+    @Override
+    public Subscription findByExternalSubscriptionId(String externalSubscriptionId) {
+        return repository.findByExternalSubscriptionId(externalSubscriptionId)
+                .map(this::toDomainModel)
+                .orElse(null);
+    }
+
+    private Subscription toDomainModel(SubscriptionEntity entity) {
+
+        Subscription subscription = new Subscription(
+                entity.getUserId(),
+                entity.getExternalSubscriptionId(),
+                entity.getPlanType(),
+                entity.getCheckoutUrl()
+        );
+        subscription.setId(entity.getId());
+        subscription.setPaymentDate(entity.getPaymentDate());
+        subscription.setStatus(entity.getStatus());
+        return subscription;
     }
 }

@@ -1,7 +1,6 @@
 package com.edward.auth_service.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "users")
@@ -9,7 +8,6 @@ public class User {
 
     @Id
     @GeneratedValue
-    @UuidGenerator
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -18,9 +16,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-
     @Column(nullable = false)
     private String password;
+
+    public User() {
+
+    }
 
     public Long getId() {
         return id;
@@ -53,6 +54,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 }
