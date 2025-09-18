@@ -42,13 +42,12 @@ public class WeatherCoreService implements WeatherServicePort {
 
         WeatherData cachedData = cache.get("weather-data-" + cityId, WeatherData.class);
         if (cachedData == null) {
-            WeatherData rawData = dataSource.fetchWeatherData(cityId);
-            cachedData = filterDataByPlan(rawData, plan.name());
+            cachedData = dataSource.fetchWeatherData(cityId);
         }
 
         cache.save("weather-data-" + cityId, cachedData, 15, TimeUnit.MINUTES);
 
-        return cachedData;
+        return filterDataByPlan(cachedData, plan.name());
     }
     private boolean isRateLimited(Long clientId, Plan plan) {
         String cacheKey = "rate-limit-" + clientId + "-" + LocalDate.now();

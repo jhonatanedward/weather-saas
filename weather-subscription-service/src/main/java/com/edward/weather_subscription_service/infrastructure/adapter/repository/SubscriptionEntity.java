@@ -13,7 +13,7 @@ public class SubscriptionEntity {
     @UuidGenerator
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
-    private String userId;
+    private Long userId;
     private String plan;
     private String externalSubscriptionId;
     private LocalDateTime paymentDate;
@@ -27,11 +27,11 @@ public class SubscriptionEntity {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

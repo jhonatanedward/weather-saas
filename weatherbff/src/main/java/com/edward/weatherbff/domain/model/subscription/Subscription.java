@@ -1,11 +1,22 @@
 package com.edward.weatherbff.domain.model.subscription;
 
-import java.time.Instant;
 
 public class Subscription {
+    private String id;
     private Long userId;
     private String email;
     private Plan plan;
+    private String externalSubscriptionId;
+    private String paymentDate;
+    private String status;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Long getUserId() {
         return userId;
@@ -30,7 +41,27 @@ public class Subscription {
         this.plan = plan;
     }
 
-    public void setPlanType(Plan planType) {
-        this.plan = plan;
+    public String getExternalSubscriptionId() {
+        return externalSubscriptionId;
+    }
+
+    public void setExternalSubscriptionId(String externalSubscriptionId) {
+        this.externalSubscriptionId = externalSubscriptionId;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

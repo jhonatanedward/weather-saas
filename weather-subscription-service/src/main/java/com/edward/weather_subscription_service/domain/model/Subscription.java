@@ -5,14 +5,14 @@ import java.util.UUID;
 
 public class Subscription {
     private UUID id;
-    private String userId;
+    private Long userId;
     private Plan plan;
     private String externalSubscriptionId;
     private LocalDateTime paymentDate;
     private String checkoutUrl;
     private Status status;
 
-    public Subscription(String userId, String externalSubscriptionId, Plan plan, String checkoutUrl) {
+    public Subscription(Long userId, String externalSubscriptionId, Plan plan, String checkoutUrl) {
         this.userId = userId;
         this.externalSubscriptionId = externalSubscriptionId;
         this.plan = plan;
@@ -31,7 +31,7 @@ public class Subscription {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

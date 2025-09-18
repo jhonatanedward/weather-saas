@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/subscriptions")
 @AllArgsConstructor
-public class SubscriptionController {
+public class SubscriptionController implements SubscriptionApi{
 
     private final CreateSubscriptionUseCase createSubscriptionUseCase;
     private final FindSubscriptionUseCase findSubscriptionUseCase;
@@ -37,7 +37,7 @@ public class SubscriptionController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<?>> getSubscription(@RequestParam String userId) {
+    public ResponseEntity<ApiResponse<?>> getSubscription(@RequestParam Long userId) {
         Subscription subscription = findSubscriptionUseCase.findByUserId(userId);
         ApiResponse<Subscription> apiResponse = ApiResponse.success(
                 "Ok",

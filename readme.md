@@ -67,7 +67,7 @@ GET **/v1/subscription** - Consulta subscrição do usuário.
 
 Acessar POSTGRESQL...
 
-docker exec -it weather-saas-db-1  psql -U user -d subscription_db
+docker exec -it weather-saas-db-1  psql -U user -d weather_db
 
 
 ## TRADE-OFFS:

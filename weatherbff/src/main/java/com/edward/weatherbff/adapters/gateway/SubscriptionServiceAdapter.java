@@ -9,6 +9,8 @@ import com.edward.weatherbff.adapters.gateway.mappers.SubscriptionMapper;
 import com.edward.weatherbff.domain.model.subscription.Subscription;
 import com.edward.weatherbff.domain.model.subscription.SubscriptionCreated;
 import com.edward.weatherbff.domain.port.out.SubscriptionPort;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,6 +27,9 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
     private final RestTemplate restTemplate;
     private final SubscriptionMapper subscriptionMapper;
 
+    @Value("${subscription.url}")
+    private String subscriptionUrl;
+
     ParameterizedTypeReference<ApiResponse<SubscriptionCreatedResponse>> typeReference =
             new ParameterizedTypeReference<>() {};
 
@@ -39,7 +44,7 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
     @Override
     public Subscription getSubscription(Long clientId) {
 
-        String subscriptionServiceUrl = "http://localhost:8082/v1/subscriptions?userId=" + clientId;
+        String subscriptionServiceUrl = subscriptionUrl + "/v1/subscriptions?userId=" + clientId;
 
         ParameterizedTypeReference<ApiResponse<SubscriptionData>> typeReference =
                 new ParameterizedTypeReference<>() {};
@@ -64,7 +69,7 @@ public class SubscriptionServiceAdapter implements SubscriptionPort {
     public SubscriptionCreated createSubscription(Long userId, String email) {
         SubscriptionServiceRequest request = new SubscriptionServiceRequest(userId, email);
 
-        String paymentServiceUrl = "http://localhost:8082/v1/subscriptions";
+        String paymentServiceUrl = subscriptionUrl + "/v1/subscriptions";
 
         ResponseEntity<ApiResponse<SubscriptionCreatedResponse>> response = restTemplate.exchange(
                 paymentServiceUrl,

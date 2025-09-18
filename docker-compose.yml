@@ -14,13 +14,27 @@ services:
     networks:
       - weather-network
 
+  weather-subscription:
+    build:
+      context: ./weather-subscription-service
+      dockerfile: Dockerfile
+    container_name: weather-subscription-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - weather-network
   # weather-bff:
   #   build:
   #     context: ./weather-bff
   #     dockerfile: Dockerfile
   #   container_name: weather-bff
   #   ports:
-  #     - "8081:8081" # Porta para sua aplicação BFF
+  #     - "8082:8082" # Porta para sua aplicação BFF
   #   environment:
   #     - SPRING_PROFILES_ACTIVE=local
   #   restart: unless-stopped
@@ -57,7 +71,7 @@ services:
 
   redis:
     image: redis:6.2-alpine
-    container_name: weather-bff-redis
+    container_name: redis
     ports:
       - "6379:6379"
     restart: always

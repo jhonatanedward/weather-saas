@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 interface JpaSubscriptionRepository extends JpaRepository<SubscriptionEntity, UUID> {
-    Optional<SubscriptionEntity> findByUserId(String userId);
+    Optional<SubscriptionEntity> findByUserId(Long userId);
     Optional<SubscriptionEntity> findByExternalSubscriptionId(String externalSubscriptionId);
 }
 
@@ -39,7 +39,7 @@ public class JpaSubscriptionRepositoryAdapter implements SubscriptionRepositoryP
     }
 
     @Override
-    public Subscription findByUserId(String userId) {
+    public Subscription findByUserId(Long userId) {
         return repository.findByUserId(userId)
                 .map(this::toDomainModel)
                 .orElse(null);

@@ -46,7 +46,7 @@ public class SubscriptionService implements CreateSubscriptionUseCase, FindSubsc
     }
 
     @Override
-    public Subscription findByUserId(String userId) throws SubscriptionNotFoundException {
+    public Subscription findByUserId(Long userId) throws SubscriptionNotFoundException {
         Subscription subscription = subscriptionRepositoryPort.findByUserId(userId);
         if(subscription == null) {
             throw new SubscriptionNotFoundException("It's has no subscription for that user.");

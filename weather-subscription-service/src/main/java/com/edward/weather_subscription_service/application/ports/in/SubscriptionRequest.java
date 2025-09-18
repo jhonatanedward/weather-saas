@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record SubscriptionRequest(
         @JsonProperty("user_id")
-        String userId,
+        Long userId,
         @JsonProperty("email")
         String email){
 
