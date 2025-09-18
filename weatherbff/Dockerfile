@@ -1,9 +1,16 @@
-# Use OpenJDK 21
+# Usa o JDK 21
 FROM eclipse-temurin:21-jdk-jammy
 
-COPY build/libs/weather-subscription-service-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
 
-EXPOSE 8080
+COPY . .
 
-# Comando para rodar a aplicação
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+RUN chmod +x ./gradlew
+
+RUN ./gradlew build -x test
+
+RUN cp build/libs/*SNAPSHOT.jar app.jar
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

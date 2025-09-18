@@ -266,6 +266,7 @@ weatherbff/
 - Resposta varia conforme plano do usuário (ver seção "Diferenças entre Planos")
 
 **POST /v1/api/subscription** - Criar assinatura (proxy)
+
 **GET /v1/api/subscription** - Consultar assinatura (proxy)
 
 ## Diferenças entre Planos Free e Premium

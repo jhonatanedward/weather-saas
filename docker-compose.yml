@@ -28,21 +28,21 @@ services:
       - db
     networks:
       - weather-network
-  # weather-bff:
-  #   build:
-  #     context: ./weather-bff
-  #     dockerfile: Dockerfile
-  #   container_name: weather-bff
-  #   ports:
-  #     - "8082:8082" # Porta para sua aplicação BFF
-  #   environment:
-  #     - SPRING_PROFILES_ACTIVE=local
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - rabbitmq
-  #     - redis
-  #   networks:
-  #     - weather-network
+  weather-bff:
+    build:
+      context: ./weather-bff
+      dockerfile: Dockerfile
+    container_name: weather-bff
+    ports:
+      - "8082:8082" # Porta para sua aplicação BFF
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - weather-network
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
