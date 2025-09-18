@@ -80,6 +80,64 @@ O Weather SaaS é uma plataforma de serviços meteorológicos baseada em microse
 ![Texto descritivo da imagem](./docs/desenho_arquitetura.png "Título da imagem opcional")
 
 
+## Como Executar o Projeto Weather SaaS 🚀
+
+### 1. Gerar Chaves Pública e Privada para o Auth Service
+
+No diretório auth-service, gere as chaves RSA:
+
+```sh
+openssl genrsa -out private.pem 2048
+openssl rsa -in private.pem -pubout -out public.pem
+```
+
+Coloque os arquivos `private.pem` e `public.pem` em resources.
+
+---
+
+### 2. Definir a API Key do OpenWeatherMap no Docker Compose
+
+No arquivo docker-compose.yml, adicione a variável de ambiente para o serviço weatherbff:
+
+```yaml
+services:
+  weatherbff:
+    environment:
+      - OPENWEATHERMAP_APIKEY=your_api_key_here
+    # ...outros parâmetros...
+```
+
+Substitua `your_api_key_here` pela sua chave da OpenWeatherMap.
+
+---
+
+### 3. Subir os Serviços com Docker Compose
+
+No diretório raiz do projeto, execute:
+
+```sh
+docker-compose up -d --build
+```
+
+Isso irá construir as imagens e iniciar todos os serviços em segundo plano.
+
+---
+
+### 4. Pronto!
+
+Acesse os serviços nas portas:
+
+- **Auth Service:** http://localhost:8080
+- **Weather Subscription Service:** http://localhost:8081
+- **Weather BFF:** http://localhost:8082
+
+---
+
+**Observação:** Certifique-se de que Docker e Docker Compose estão instalados em sua máquina.
+
+---
+
+
 ## Detalhamento dos Serviços
 
 ### 1. Auth Service (Porta 8080)
@@ -288,129 +346,52 @@ weatherbff/
 #### Usuário Free - Resposta Limitada
 ```json
 {
- "status": "success",
- "plan_type": "FREE",
- "data": {
-   "city_id": "3448439",
-   "city_name": "São Paulo",
-   "current": {
-     "temperature": 23.5,
-     "humidity": 65,
-     "description": "Parcialmente nublado",
-     "timestamp": "2024-01-15T14:00:00Z"
-   },
-   "forecast": [
-     {
-       "date": "2024-01-16",
-       "temperature_max": 28,
-       "temperature_min": 18,
-       "description": "Ensolarado"
-     },
-     {
-       "date": "2024-01-17",
-       "temperature_max": 26,
-       "temperature_min": 19,
-       "description": "Nublado"
-     },
-     {
-       "date": "2024-01-18",
-       "temperature_max": 24,
-       "temperature_min": 17,
-       "description": "Chuva"
-     }
-   ],
-   "limitations": {
-     "daily_requests_remaining": 87,
-     "daily_limit": 100,
-     "next_reset": "2024-01-16T00:00:00Z"
-   }
- }
+    "coord": {
+        "lon": -46.6228,
+        "lat": -23.6861
+    },
+    "main": {
+        "temp": 287.89,
+        "feels_like": 0.0,
+        "temp_min": 0.0,
+        "temp_max": 0.0,
+        "pressure": 0,
+        "humidity": 96
+    },
+    "visibility": 0,
+    "name": "Diadema"
 }
 ```
 
 #### Usuário Premium - Resposta Completa
 ```json
 {
- "status": "success",
- "plan_type": "PREMIUM",
- "data": {
-   "city_id": "3448439",
-   "city_name": "São Paulo",
-   "coordinates": {
-     "latitude": -23.5505,
-     "longitude": -46.6333
-   },
-   "current": {
-     "temperature": 23.5,
-     "feels_like": 25.2,
-     "humidity": 65,
-     "pressure": 1013.2,
-     "visibility": 10000,
-     "uv_index": 6,
-     "wind": {
-       "speed": 12.5,
-       "direction": 180,
-       "gust": 18.3
-     },
-     "description": "Parcialmente nublado",
-     "icon": "partly-cloudy",
-     "timestamp": "2024-01-15T14:00:00Z"
-   },
-   "hourly_forecast": [
-     {
-       "time": "2024-01-15T15:00:00Z",
-       "temperature": 24.1,
-       "humidity": 62,
-       "precipitation_probability": 10,
-       "wind_speed": 11.2
-     }
-     // ... mais 23 horas
-   ],
-   "daily_forecast": [
-     {
-       "date": "2024-01-16",
-       "temperature_max": 28,
-       "temperature_min": 18,
-       "humidity_avg": 58,
-       "precipitation_probability": 5,
-       "precipitation_amount": 0,
-       "wind_speed_avg": 10.5,
-       "uv_index_max": 8,
-       "sunrise": "2024-01-16T05:45:00Z",
-       "sunset": "2024-01-16T19:15:00Z",
-       "description": "Ensolarado",
-       "icon": "sunny"
-     }
-     // ... mais 14 dias
-   ],
-   "historical_data": {
-     "available_from": "2023-01-15T00:00:00Z",
-     "endpoint": "/v1/api/weather/{cityId}/historical"
-   },
-   "alerts": [
-     {
-       "type": "temperature",
-       "severity": "moderate",
-       "message": "Temperatura acima da média para a época",
-       "valid_until": "2024-01-16T18:00:00Z"
-     }
-   ],
-   "air_quality": {
-     "aqi": 42,
-     "level": "Good",
-     "pollutants": {
-       "pm2_5": 12.3,
-       "pm10": 18.7,
-       "o3": 65.2,
-       "no2": 23.1
-     }
-   },
-   "usage_info": {
-     "requests_today": 1247,
-     "rate_limit": "1000/minute",
-     "next_billing_date": "2024-02-15T00:00:00Z"
-   }
- }
+    "coord": {
+        "lon": -46.6228,
+        "lat": -23.6861
+    },
+    "weather": [
+        {
+            "id": 802,
+            "main": "Clouds",
+            "description": "scattered clouds",
+            "icon": "03n"
+        }
+    ],
+    "main": {
+        "temp": 287.89,
+        "feels_like": 287.93,
+        "temp_min": 0.0,
+        "temp_max": 0.0,
+        "pressure": 1020,
+        "humidity": 96
+    },
+    "wind": {
+        "speed": 5.66,
+        "deg": 130
+    },
+    "visibility": 10000,
+    "name": "Diadema"
 }
 ```
 

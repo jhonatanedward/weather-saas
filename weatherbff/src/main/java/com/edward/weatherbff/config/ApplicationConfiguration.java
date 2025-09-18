@@ -7,6 +7,7 @@ import com.edward.weatherbff.domain.services.SubscriptionService;
 import com.edward.weatherbff.domain.services.WeatherCoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +18,9 @@ import java.util.Base64;
 
 @org.springframework.context.annotation.Configuration
 public class ApplicationConfiguration {
+
+    @Value("${auth.url}")
+    private String authUrl;
 
     @Bean
     public RestTemplate restTemplate() {
@@ -40,7 +44,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public PublicKey publicKey(RestTemplate restTemplate) throws Exception {
-        String keyString = restTemplate.getForObject("http://localhost:8080/v1/auth/public-key", String.class);
+        String keyString = restTemplate.getForObject(authUrl + "/v1/auth/public-key", String.class);
         keyString = keyString
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
