@@ -182,8 +182,8 @@ auth-service/
 **POST /auth/signup** - Cadastro de usuário
 ```json
 {
-   "username": "jhonatanedward",
-   "email": "jhonatanedsp@gmail.com",
+   "username": "testeuser",
+   "email": "testeuser@gmail.com",
    "password": "1234"
 }
 ```
@@ -191,7 +191,7 @@ auth-service/
 **POST /auth/signin** - Login de usuário
 ```json
 {
-   "username": "jhonatanedward",
+   "username": "testeuser",
    "password": "1234"
 }
 ```
