@@ -75,10 +75,6 @@ O Weather SaaS é uma plataforma de serviços meteorológicos baseada em microse
 | **Cache TTL** | 15 minutos (compartilhado) | 15 minutos (compartilhado) |
 | **Dados Meteorológicos** | Básicos (temperatura e umidade) | Completos (vento, visibilidade, pressão, nascer/pôr do sol) |
 
-## Arquitetura da Solução
-
-![Texto descritivo da imagem](./docs/desenho_arquitetura.png "Título da imagem opcional")
-
 
 ## Como Executar o Projeto Weather SaaS 🚀
 
@@ -136,6 +132,10 @@ Acesse os serviços nas portas:
 **Observação:** Certifique-se de que Docker e Docker Compose estão instalados em sua máquina.
 
 ---
+
+## Arquitetura da Solução
+
+![Texto descritivo da imagem](./docs/desenho_arquitetura.png "Título da imagem opcional")
 
 
 ## Detalhamento dos Serviços
